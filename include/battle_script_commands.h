@@ -51,6 +51,8 @@ u32 IsLeafGuardProtected(enum BattlerId battler, enum Ability ability);
 bool32 IsShieldsDownProtected(enum BattlerId battler, enum Ability ability);
 u32 IsAbilityStatusProtected(enum BattlerId battler, enum Ability ability);
 bool32 TryResetBattlerStatChanges(enum BattlerId battler);
+bool32 HasAnyPositiveStatStage(enum BattlerId battler); // [Throne]
+void RemovePositiveStatStages(enum BattlerId battler); // [Throne]
 bool32 CanCamouflage(enum BattlerId battler);
 void StealTargetItem(enum BattlerId battlerStealer, enum BattlerId battlerItem, enum Item itemOverride);
 u8 GetCatchingBattler(void);

@@ -117,6 +117,21 @@ BattleScript_EffectDefog::
 	trydefog TRUE, NULL
 	goto BattleScript_MoveEnd
 
+@ [Throne] Flash: zera os bônus positivos do alvo e depois baixa a precisão dele.
+@ A remoção dos bônus acontece dentro do trymovestatchanges (case EFFECT_FLASH em
+@ StatChangeBeforeChange), depois da checagem de acerto e antes da queda de precisão.
+BattleScript_EffectFlash::
+	attackcanceler
+	trymovestatchanges
+	goto BattleScript_MoveEnd
+
+BattleScript_FlashRemoveBoosts::
+	playmoveanimation MOVE_NONE
+	waitanimation
+	printstring STRINGID_TARGETSTATBOOSTSREMOVED
+	waitmessage B_WAIT_TIME_LONG
+	return
+
 BattleScript_EffectMemento::
 	attackcanceler
 	trymovestatchanges

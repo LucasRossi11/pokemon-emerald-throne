@@ -1736,6 +1736,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
         break;
     case EFFECT_AUTOTOMIZE:
     case EFFECT_STAT_CHANGE:
+    case EFFECT_FLASH: // [Throne]
         if (AI_GetBattlerMoveTargetType(battlerAtk, move) == TARGET_USER)
         {
             if (!AI_CanAnyStatChange(battlerAtk, battlerAtk, move))
@@ -4430,6 +4431,11 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
     case EFFECT_AUTOTOMIZE:
     case EFFECT_STAT_CHANGE:
         ADJUST_SCORE(GetStatChangeScore(battlerAtk, battlerDef, move));
+        break;
+    case EFFECT_FLASH: // [Throne] Vale mais quando o alvo tem bônus para perder.
+        ADJUST_SCORE(GetStatChangeScore(battlerAtk, battlerDef, move));
+        if (HasAnyPositiveStatStage(battlerDef))
+            ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_STOCKPILE:
         if (HasMoveWithEffect(battlerAtk, EFFECT_SWALLOW) || HasMoveWithEffect(battlerAtk, EFFECT_SPIT_UP))

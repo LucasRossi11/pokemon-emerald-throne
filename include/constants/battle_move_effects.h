@@ -284,6 +284,7 @@ enum  BattleMoveEffects
     EFFECT_SPECIES_POWER_OVERRIDE, // Uses argument field to for the species, power and (number of hits, used only for multi hit moves)
     EFFECT_SCALE_SHOT,
     EFFECT_SECRET_POWER,
+    EFFECT_FLASH, // [Throne] Flash: baixa a precisão do alvo e zera os bônus positivos de stat dele.
     NUM_BATTLE_MOVE_EFFECTS,
 };
 

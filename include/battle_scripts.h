@@ -685,6 +685,8 @@ extern const u8 BattleScript_AbilityPreventsPhasingOutRet[];
 extern const u8 BattleScript_PrintMonIsRootedRet[];
 extern const u8 BattleScript_FinalGambit[];
 extern const u8 BattleScript_EffectDefog[];
+extern const u8 BattleScript_EffectFlash[]; // [Throne]
+extern const u8 BattleScript_FlashRemoveBoosts[]; // [Throne]
 extern const u8 BattleScript_EffectMemento[];
 
 extern const u8 BattleScript_EffectHitEnemyHealAlly[];

@@ -1882,4 +1882,12 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
         .battleTvScore = 1,
     },
+
+    // [Throne] Efeito próprio do Flash.
+    [EFFECT_FLASH] =
+    {
+        .battleScript = BattleScript_EffectFlash,
+        .battleTvScore = 0,
+        .encourageEncore = TRUE,
+    },
 };

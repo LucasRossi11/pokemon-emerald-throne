@@ -5584,6 +5584,25 @@ static enum MoveResult StatChangeBeforeChange(struct BattleCalcValues *cv)
             return MOVE_RESULT_RUN_SCRIPT_INCREMENT;
         }
         break;
+    case EFFECT_FLASH:
+    {
+        // [Throne] Se acertou, zera os bônus positivos do alvo antes da queda de precisão.
+        // Também roda quando a precisão não pode cair, desde que haja bônus para zerar.
+        bool32 removeBoosts = !(gBattleStruct->moveResultFlags[cv->battlerDef] & (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE))
+                           && HasAnyPositiveStatStage(cv->battlerDef);
+        if (removeBoosts)
+        {
+            RemovePositiveStatStages(cv->battlerDef);
+            BattleScriptCall(BattleScript_FlashRemoveBoosts);
+            return MOVE_RESULT_RUN_SCRIPT_INCREMENT;
+        }
+        if (WillAnyStatChange())
+        {
+            BattleScriptCall(BattleScript_PlayMoveAnim);
+            return MOVE_RESULT_RUN_SCRIPT_INCREMENT;
+        }
+        break;
+    }
     case EFFECT_TIDY_UP:
         if (TryTidyUpClear(FALSE))
         {

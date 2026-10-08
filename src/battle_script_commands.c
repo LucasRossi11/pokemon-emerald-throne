@@ -9656,6 +9656,27 @@ void BS_TryDefog(void)
 }
 
 
+// [Throne] Usado pelo Flash.
+bool32 HasAnyPositiveStatStage(enum BattlerId battler)
+{
+    for (enum Stat stat = 0; stat < NUM_BATTLE_STATS; stat++)
+    {
+        if (gBattleMons[battler].statStages[stat] > DEFAULT_STAT_STAGE)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// [Throne] Zera os bônus positivos. Bônus negativos ficam. Usado pelo Flash.
+void RemovePositiveStatStages(enum BattlerId battler)
+{
+    for (enum Stat stat = 0; stat < NUM_BATTLE_STATS; stat++)
+    {
+        if (gBattleMons[battler].statStages[stat] > DEFAULT_STAT_STAGE)
+            gBattleMons[battler].statStages[stat] = DEFAULT_STAT_STAGE;
+    }
+}
+
 void BS_TryTidyUp(void)
 {
     NATIVE_ARGS(u8 clear, const u8 *failInstr);
