@@ -110,11 +110,14 @@ enum Language
 #define ROAMER_COUNT 1 // Number of maximum concurrent active roamers
 
 // Bag constants
-#define BAG_ITEMS_COUNT 30
-#define BAG_KEYITEMS_COUNT 30
-#define BAG_POKEBALLS_COUNT 16
-#define BAG_TMHM_COUNT 64
-#define BAG_BERRIES_COUNT 46
+// [Throne] Bolsos ampliados. O máximo por bolso é 254, porque a tela da bolsa conta os
+// itens (+1 do Cancel) num u8. Os outros cobrem todos os itens de cada bolso do jogo.
+// O espaço no save vem de FREE_MYSTERY_EVENT_BUFFERS e FREE_MYSTERY_GIFT (config/save.h).
+#define BAG_ITEMS_COUNT 254
+#define BAG_KEYITEMS_COUNT 80
+#define BAG_POKEBALLS_COUNT 30
+#define BAG_TMHM_COUNT 110
+#define BAG_BERRIES_COUNT 70
 
 // Number of facilities for Ranking Hall.
 // 7 facilities for single mode + tower double mode + tower multi mode.
