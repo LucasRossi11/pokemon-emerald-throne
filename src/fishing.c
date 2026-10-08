@@ -225,6 +225,10 @@ static bool32 Fishing_ShowDots(struct Task *task)
         if (!DoesFishingMinigameAllowCancel())
             return FALSE;
 
+        // [Throne] Com um Pokémon já fisgado, apertar A cedo não faz ele escapar.
+        if (I_FISHING_NO_ESCAPE && task->tRoundsPlayed != 0)
+            return FALSE;
+
         task->tStep = FISHING_NOT_EVEN_NIBBLE;
         if (task->tRoundsPlayed != 0)
             task->tStep = FISHING_GOT_AWAY;
@@ -320,7 +324,7 @@ static bool32 Fishing_WaitForA(struct Task *task)
     AlignFishingAnimationFrames();
     task->tFrameCounter++;
     if (task->tFrameCounter >= reelTimeouts[task->tFishingRod])
-        task->tStep = FISHING_GOT_AWAY;
+        task->tStep = I_FISHING_NO_ESCAPE ? FISHING_CHECK_MORE_DOTS : FISHING_GOT_AWAY; // [Throne] Sem fuga por demora.
     else if (JOY_NEW(A_BUTTON))
         task->tStep = FISHING_CHECK_MORE_DOTS;
     return FALSE;

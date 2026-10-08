@@ -9,5 +9,6 @@
 #define I_FISHING_CHAIN             FALSE      // Introduced in XY, hooking the same Pokémon repeatedly will increase the odds of that mon being shiny. NOTE: This implementation is an approximation of the actual feature, as XY have not been throughoutly documented or datamined.
 #define I_FISHING_PROXIMITY         FALSE      // In XY, bite chance is boosted by the number of adjacent non-surfable tiles next to your fishing line
 #define I_FISHING_TIME_OF_DAY_BOOST FALSE      // In XY, bite chance is boosted during morning and evening
+#define I_FISHING_NO_ESCAPE         TRUE       // [Throne] Se o jogador não apertar A a tempo depois da fisgada, o Pokémon fica no anzol mesmo assim. Só vale para o minigame da Gen 3.
 
 #endif // GUARD_CONFIG_FISHING_H
