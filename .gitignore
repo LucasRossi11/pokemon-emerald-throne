@@ -66,3 +66,13 @@ tools/aif2pcm/aif2pcm
 *.smolTM
 __pycache__
 .map_version
+
+# AI Assistant configs
+.claude/
+.clinerules/
+.cursor/
+.opencode/
+.windsurf/
+AGENTS.md
+CLAUDE.md
+.github/copilot-instructions.md
