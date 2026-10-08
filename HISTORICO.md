@@ -16,6 +16,21 @@ Entradas mais novas ficam no topo.
 
 ## 2026-10-07
 
+### Exp. Share entregue por NPC em Oldale
+
+O Exp. Share deixa de vir no jogo novo. Agora uma moradora de Oldale entrega o item,
+com fala própria, logo no começo da jornada.
+
+- NPC: Pokéfan da esquerda na `OldaleTown_House2`, a casa residencial à direita da
+  entrada de Oldale (sudeste do mapa).
+- `data/maps/OldaleTown_House2/scripts.inc`: o script da moradora entrega
+  `ITEM_EXP_SHARE`, liga `I_EXP_SHARE_FLAG` e explica o item. Depois disso ela só lembra
+  como o item funciona. Três falas novas (`Text_TakeThisExpShare`, `Text_ExplainExpShare`,
+  `Text_ExpShareReminder`) no lugar de `OldaleTown_House2_Text_PokemonLevelUp`.
+- `include/constants/flags.h`: `FLAG_UNUSED_0x021` vira `FLAG_RECEIVED_EXP_SHARE_OLDALE`
+  (`0x21`). Marca que o jogador já recebeu o item.
+- `src/new_game.c`: removida a entrega do Exp. Share no `NewGameInitData`.
+
 ### Troca de prêmios: Sr. Stone e Mãe
 
 Como o Exp. Share já vem desde o começo, os prêmios mudaram:
@@ -41,6 +56,7 @@ estilo Gen 6, que liga e desliga o efeito.
   - `I_EXP_SHARE_FLAG` = `FLAG_UNUSED_0x020` (antes `0`, que deixava o recurso desligado).
   - `I_EXP_SHARE_ITEM` = `GEN_6` (antes `GEN_5`).
 - `src/new_game.c`: `NewGameInitData` põe o Exp. Share na mochila e liga a flag.
+  *Substituído depois pela entrega em Oldale (ver acima).*
 
 Observações:
 - Só vale para jogo novo. Saves antigos não recebem o item nem a flag.
