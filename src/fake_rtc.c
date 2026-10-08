@@ -10,8 +10,8 @@
 
 static void FakeRtc_CalcTimeDifference(struct Time *result, struct SiiRtcInfo *t1, struct Time *t2);
 
-// Frames elapsed since the last in-game clock tick. Independent of the play time
-// counter so the clock keeps running after play time maxes out at 999:59:59.
+// [Throne] Frames desde o último tique do relógio do jogo. Separado do contador de
+// tempo de jogo, para o relógio seguir andando depois que o tempo trava em 999:59:59.
 static u8 sFakeRtcFrameCounter;
 
 void FakeRtc_Reset(void)
@@ -52,8 +52,8 @@ void FakeRtc_TickTimeForward(void)
     FakeRtc_AdvanceTimeBy(0, 0, 0, FakeRtc_GetSecondsRatio());
 }
 
-// Called once per game frame. The clock follows emulated frames rather than
-// the cartridge RTC, so it speeds up with the emulator's fast forward.
+// [Throne] Chamado uma vez por frame. O relógio segue os frames emulados, não o RTC
+// do cartucho, então acelera junto com o fast forward do emulador.
 void FakeRtc_UpdateFrame(void)
 {
     if (!OW_USE_FAKE_RTC)
