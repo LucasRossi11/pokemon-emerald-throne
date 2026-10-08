@@ -28,8 +28,8 @@
 // Exp. Share config
 // To use this feature, replace the 0 with the flag ID you're assigning it to.
 // Eg: Replace with FLAG_UNUSED_0x264 so you can use that flag to toggle the feature.
-#define I_EXP_SHARE_FLAG        0           // If this flag is set, every Pokémon in the party will gain experience, regardless if they participated in the battle or not.
-#define I_EXP_SHARE_ITEM        GEN_5       // In Gen6+, the Exp. Share is a Key item that toggles the effect described above.
+#define I_EXP_SHARE_FLAG        FLAG_UNUSED_0x020 // [Throne] Flag livre usada pelo Exp. Share. Com ela ligada, toda a equipe ganha XP, mesmo quem não lutou.
+#define I_EXP_SHARE_ITEM        GEN_6             // [Throne] Exp. Share vira item chave (estilo Gen 6) que liga e desliga a flag acima.
 
 // Repel/Lure config
 // These two settings are both independent and complementary.

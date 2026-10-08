@@ -332,10 +332,12 @@ PlayersHouse_1F_EventScript_CheckGiveAmuletCoin::
 	goto_if_set FLAG_BADGE05_GET, PlayersHouse_1F_EventScript_TryGiveAmuletCoin
 	goto PlayersHouse_1F_EventScript_MomHealsParty
 
+@ [Throne] Mãe entrega o Lucky Egg no lugar do Amulet Coin, que agora vem do Sr. Stone.
+@ A flag FLAG_RECEIVED_AMULET_COIN mantém o nome para não quebrar saves.
 PlayersHouse_1F_EventScript_TryGiveAmuletCoin::
 	goto_if_set FLAG_RECEIVED_AMULET_COIN, PlayersHouse_1F_EventScript_MomHealsParty
 	msgbox PlayersHouse_1F_Text_GotDadsBadgeHeresSomethingFromMom, MSGBOX_DEFAULT
-	giveitem ITEM_AMULET_COIN
+	giveitem ITEM_LUCKY_EGG
 	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
 	msgbox PlayersHouse_1F_Text_DontPushYourselfTooHard, MSGBOX_DEFAULT
 	setflag FLAG_RECEIVED_AMULET_COIN

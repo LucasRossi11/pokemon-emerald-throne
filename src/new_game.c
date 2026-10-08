@@ -234,6 +234,9 @@ void NewGameInitData(void)
     ResetItemFlags();
     ResetDexNav();
     ClearFollowerNPCData();
+    // [Throne] Jogo novo começa com o Exp. Share na mochila e já ligado.
+    AddBagItem(ITEM_EXP_SHARE, 1);
+    FlagSet(I_EXP_SHARE_FLAG);
 }
 
 static void ResetMiniGamesRecords(void)
