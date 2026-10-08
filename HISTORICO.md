@@ -10,6 +10,9 @@ O que muda no Throne em relação ao Pokémon Emerald original.
 | Exp. Share | Item chave que liga e desliga pela bolsa Key Items. Ligado, toda a equipe recebe XP, mesmo quem não lutou. |
 | TMs | Infinitos: não gastam ao usar. Por isso não podem ser vendidos nem descartados. |
 | HMs | Os golpes podem ser esquecidos como qualquer outro, sem precisar do Move Deleter. |
+| Bolsa | Bolsos bem maiores: Items 254, Key Items 80, Poké Balls 30, TMs/HMs 110, Berries 70 (antes 30, 30, 16, 64 e 46). Cada item empilha até 999. |
+| Pesca | O Pokémon fisgado não escapa se o jogador demorar a apertar A. Apertar A cedo também não o faz fugir depois da primeira fisgada. |
+| Mystery Gift | Desativado, junto com os eventos de distribuição. |
 
 ## Golpes de HM
 
