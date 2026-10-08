@@ -32,6 +32,11 @@ void PlayTimeCounter_Start(void)
 
 void PlayTimeCounter_Update(void)
 {
+    if (sPlayTimeCounterState == STOPPED)
+        return;
+
+    FakeRtc_UpdateFrame();
+
     if (sPlayTimeCounterState != RUNNING)
         return;
 
@@ -43,7 +48,6 @@ void PlayTimeCounter_Update(void)
 
     gSaveBlock2Ptr->playTimeVBlanks = 0;
     gSaveBlock2Ptr->playTimeSeconds++;
-    FakeRtc_TickTimeForward();
 
     if (gSaveBlock2Ptr->playTimeSeconds < 60)
         return;
