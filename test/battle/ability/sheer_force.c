@@ -626,6 +626,7 @@ static inline bool32 IsMoveSheerForceBoosted(enum Move move)
         case MOVE_WICKED_TORQUE:
         case MOVE_WILDBOLT_STORM:
         case MOVE_ZING_ZAP:
+        case MOVE_STRENGTH: // [Throne] Strength ganhou 20% de flinch.
         case MOVE_ELECTRO_SHOT:
         case MOVE_PSYCHIC_NOISE:
             return TRUE;

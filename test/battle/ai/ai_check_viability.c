@@ -221,8 +221,9 @@ AI_SINGLE_BATTLE_TEST("AI sees increased base power of Spit Up")
 AI_SINGLE_BATTLE_TEST("AI can choose Counter or Mirror Coat if the predicted move split is correct and user doesn't faint")
 {
     enum Move playerMove = MOVE_NONE, opponentMove = MOVE_NONE;
+    // [Throne] Usa Drill Peck no lugar do Strength, que ganhou flinch e quebrava o teste.
 
-    PARAMETRIZE { playerMove = MOVE_STRENGTH; opponentMove = MOVE_COUNTER; }
+    PARAMETRIZE { playerMove = MOVE_DRILL_PECK; opponentMove = MOVE_COUNTER; }
     PARAMETRIZE { playerMove = MOVE_POWER_GEM; opponentMove = MOVE_MIRROR_COAT; }
 
     GIVEN {
@@ -230,16 +231,16 @@ AI_SINGLE_BATTLE_TEST("AI can choose Counter or Mirror Coat if the predicted mov
         ASSUME(GetMoveReflectDamage_DamageCategories(MOVE_COUNTER) == (1u << DAMAGE_CATEGORY_PHYSICAL));
         ASSUME(GetMoveEffect(MOVE_MIRROR_COAT) == EFFECT_REFLECT_DAMAGE);
         ASSUME(GetMoveReflectDamage_DamageCategories(MOVE_MIRROR_COAT) == (1u << DAMAGE_CATEGORY_SPECIAL));
-        ASSUME(GetMoveCategory(MOVE_STRENGTH) == DAMAGE_CATEGORY_PHYSICAL);
+        ASSUME(GetMoveCategory(MOVE_DRILL_PECK) == DAMAGE_CATEGORY_PHYSICAL);
         ASSUME(GetMoveCategory(MOVE_POWER_GEM) == DAMAGE_CATEGORY_SPECIAL);
         ASSUME(GetMovePower(MOVE_POWER_GEM) == 80); // Gen 5's 70 power causes the test to fail
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
         PLAYER(SPECIES_WOBBUFFET) { Speed(1); }
-        OPPONENT(SPECIES_WOBBUFFET) { HP(102); Speed(100); Moves(opponentMove, MOVE_STRENGTH); }
+        OPPONENT(SPECIES_WOBBUFFET) { HP(102); Speed(100); Moves(opponentMove, MOVE_DRILL_PECK); }
     } WHEN {
-        TURN { MOVE(player, playerMove); EXPECT_MOVE(opponent, MOVE_STRENGTH); }
+        TURN { MOVE(player, playerMove); EXPECT_MOVE(opponent, MOVE_DRILL_PECK); }
         TURN { MOVE(player, playerMove); EXPECT_MOVE(opponent, opponentMove); }
-        TURN { MOVE(player, playerMove); EXPECT_MOVE(opponent, MOVE_STRENGTH); }
+        TURN { MOVE(player, playerMove); EXPECT_MOVE(opponent, MOVE_DRILL_PECK); }
     } SCENE {
         MESSAGE("The opposing Wobbuffet fainted!");
     }
