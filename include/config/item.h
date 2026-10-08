@@ -23,7 +23,7 @@
 #define I_LAX_INCENSE_BOOST             GEN_LATEST  // In Gen4+, Lax Incense lowers accuracy by 10% instead of 5%.
 
 // TM config
-#define I_REUSABLE_TMS          FALSE       // In Gens5-8, TMs are reusable. Setting this to TRUE will make all vanilla TMs reusable, though they can also be cherry-picked by setting their importance to 1.
+#define I_REUSABLE_TMS          TRUE        // [Throne] TMs infinitos, como da Gen 5 à 8. Não gastam ao usar, não podem ser vendidos nem descartados.
 
 // Exp. Share config
 // To use this feature, replace the 0 with the flag ID you're assigning it to.
