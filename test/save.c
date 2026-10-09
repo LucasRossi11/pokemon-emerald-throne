@@ -4,7 +4,7 @@
 
 // If you would like to ensure save compatibility, update the values below with those for your hack. You can find these through the debug menu.
 // Please note that this simple check is not 100% foolproof, but should be able to catch most unintended shifts.
-#define T_SAVEBLOCK1_SIZE 15120 // [Throne] Bolsa ampliada + FREE_MYSTERY_EVENT_BUFFERS/FREE_MYSTERY_GIFT (antes 15568)
+#define T_SAVEBLOCK1_SIZE 15128 // [Throne] Bolsa ampliada + FREE_MYSTERY_EVENT_BUFFERS/FREE_MYSTERY_GIFT (antes 15568) + 4 itens registrados (antes 15120)
 #define T_SAVEBLOCK2_SIZE 3884
 #define T_SAVEBLOCK3_SIZE 16 // [Throne] OW_USE_FAKE_RTC ligado (antes 4)
 #define T_POKEMONSTORAGE_SIZE 34144

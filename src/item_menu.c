@@ -34,6 +34,7 @@
 #include "player_pc.h"
 #include "pokemon.h"
 #include "pokemon_summary_screen.h"
+#include "registered_items.h"
 #include "scanline_effect.h"
 #include "script.h"
 #include "shop.h"
@@ -289,6 +290,7 @@ static const struct ListMenuTemplate sItemListMenu =
 };
 
 static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
+static const u8 sText_CantRegisterMoreItems[] = _("You can only register {STR_VAR_1} items.\nDeselect one first."); // [Throne]
 static const struct MenuAction sItemMenuActions[] = {
     [ACTION_USE]               = {gMenuText_Use,                {ItemMenu_UseOutOfBattle}},
     [ACTION_TOSS]              = {gMenuText_Toss,               {ItemMenu_Toss}},
@@ -1024,7 +1026,7 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
         else
         {
             // Print registered icon
-            if (gSaveBlock1Ptr->registeredItem != ITEM_NONE && gSaveBlock1Ptr->registeredItem == itemSlot.itemId)
+            if (IsItemRegistered(itemSlot.itemId)) // [Throne]
                 BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, 96, y - 1, 24, 16);
         }
     }
@@ -1708,7 +1710,7 @@ static void OpenContextMenu(u8 taskId)
                 gBagMenu->contextMenuItemsPtr = gBagMenu->contextMenuItemsBuffer;
                 gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_KeyItemsPocket);
                 memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_KeyItemsPocket, sizeof(sContextMenuItems_KeyItemsPocket));
-                if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
+                if (IsItemRegistered(gSpecialVar_ItemId)) // [Throne]
                     gBagMenu->contextMenuItemsBuffer[1] = ACTION_DESELECT;
                 if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE || gSpecialVar_ItemId == ITEM_BICYCLE)
                 {
@@ -2026,10 +2028,19 @@ static void ItemMenu_Register(u8 taskId)
     u16 *scrollPos = &gBagPosition.scrollPosition[gBagPosition.pocket];
     u16 *cursorPos = &gBagPosition.cursorPosition[gBagPosition.pocket];
 
-    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
-        gSaveBlock1Ptr->registeredItem = ITEM_NONE;
-    else
-        gSaveBlock1Ptr->registeredItem = gSpecialVar_ItemId;
+    // [Throne] Até MAX_REGISTERED_ITEMS itens. Com todos os espaços ocupados, avisa e não registra.
+    if (IsItemRegistered(gSpecialVar_ItemId))
+    {
+        UnregisterItem(gSpecialVar_ItemId);
+    }
+    else if (!RegisterItem(gSpecialVar_ItemId))
+    {
+        RemoveContextWindow();
+        ConvertIntToDecimalStringN(gStringVar1, MAX_REGISTERED_ITEMS, STR_CONV_MODE_LEFT_ALIGN, 2);
+        StringExpandPlaceholders(gStringVar4, sText_CantRegisterMoreItems);
+        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, HandleErrorMessage);
+        return;
+    }
     DestroyListMenuTask(tListTaskId, scrollPos, cursorPos);
     LoadBagItemListBuffers(gBagPosition.pocket);
     tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
@@ -2159,32 +2170,40 @@ static void Task_ItemContext_GiveToPC(u8 taskId)
 
 bool8 UseRegisteredKeyItemOnField(void)
 {
-    u8 taskId;
+    u32 count;
 
     if (InUnionRoom() == TRUE || CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || InBattlePike() || InMultiPartnerRoom() == TRUE)
         return FALSE;
     HideMapNamePopUpWindow();
     ChangeBgY_ScreenOff(0, 0, BG_COORD_SET);
-    if (gSaveBlock1Ptr->registeredItem != ITEM_NONE)
+
+    // [Throne] Com um item registrado, usa direto. Com mais, abre o menu rápido.
+    count = RemoveMissingRegisteredItems();
+    if (count == 0)
     {
-        if (CheckBagHasItem(gSaveBlock1Ptr->registeredItem, 1) == TRUE)
-        {
-            LockPlayerFieldControls();
-            FreezeObjectEvents();
-            PlayerFreeze();
-            StopPlayerAvatar();
-            gSpecialVar_ItemId = gSaveBlock1Ptr->registeredItem;
-            taskId = CreateTask(GetItemFieldFunc(gSaveBlock1Ptr->registeredItem), 8);
-            gTasks[taskId].tUsingRegisteredKeyItem = TRUE;
-            return TRUE;
-        }
-        else
-        {
-            gSaveBlock1Ptr->registeredItem = ITEM_NONE;
-        }
+        ScriptContext_SetupScript(EventScript_SelectWithoutRegisteredItem);
+        return TRUE;
     }
-    ScriptContext_SetupScript(EventScript_SelectWithoutRegisteredItem);
+
+    LockPlayerFieldControls();
+    FreezeObjectEvents();
+    PlayerFreeze();
+    StopPlayerAvatar();
+    if (count == 1)
+        UseRegisteredKeyItem(gSaveBlock1Ptr->registeredItems[0]);
+    else
+        OpenRegisteredItemsMenu();
     return TRUE;
+}
+
+// [Throne] Usa o item como se viesse do SELECT. Os controles já devem estar travados.
+void UseRegisteredKeyItem(enum Item itemId)
+{
+    u8 taskId;
+
+    gSpecialVar_ItemId = itemId;
+    taskId = CreateTask(GetItemFieldFunc(itemId), 8);
+    gTasks[taskId].tUsingRegisteredKeyItem = TRUE;
 }
 
 #undef tUsingRegisteredKeyItem

@@ -38,6 +38,7 @@
 #include "main.h"
 #include "contest.h"
 #include "item_menu.h"
+#include "registered_items.h"
 #include "pokemon_storage_system.h"
 #include "pokemon_jump.h"
 #include "decoration_inventory.h"
@@ -200,7 +201,7 @@ void NewGameInitData(void)
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     DeactivateAllRoamers();
-    gSaveBlock1Ptr->registeredItem = ITEM_NONE;
+    ClearRegisteredItems(); // [Throne]
     ClearBag();
     NewGameInitPCItems();
     ClearPokeblocks();

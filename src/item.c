@@ -508,16 +508,22 @@ void CompactPCItems(void)
     BagPocket_CompactItems(&dummyPocket);
 }
 
+// [Throne] Vale para todos os espaços de item registrado.
 void SwapRegisteredBike(void)
 {
-    switch (gSaveBlock1Ptr->registeredItem)
+    u32 i;
+
+    for (i = 0; i < MAX_REGISTERED_ITEMS; i++)
     {
-    case ITEM_MACH_BIKE:
-        gSaveBlock1Ptr->registeredItem = ITEM_ACRO_BIKE;
-        break;
-    case ITEM_ACRO_BIKE:
-        gSaveBlock1Ptr->registeredItem = ITEM_MACH_BIKE;
-        break;
+        switch (gSaveBlock1Ptr->registeredItems[i])
+        {
+        case ITEM_MACH_BIKE:
+            gSaveBlock1Ptr->registeredItems[i] = ITEM_ACRO_BIKE;
+            break;
+        case ITEM_ACRO_BIKE:
+            gSaveBlock1Ptr->registeredItems[i] = ITEM_MACH_BIKE;
+            break;
+        }
     }
 }
 

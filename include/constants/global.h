@@ -119,6 +119,9 @@ enum Language
 #define BAG_TMHM_COUNT 110
 #define BAG_BERRIES_COUNT 70
 
+// [Throne] Quantos Key Items podem ficar registrados no SELECT ao mesmo tempo.
+#define MAX_REGISTERED_ITEMS 4
+
 // Number of facilities for Ranking Hall.
 // 7 facilities for single mode + tower double mode + tower multi mode.
 // Excludes link modes. See RANKING_HALL_* in include/constants/battle_frontier.h
