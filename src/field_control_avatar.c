@@ -47,6 +47,7 @@
 
 static EWRAM_DATA u8 sWildEncounterImmunitySteps = 0;
 static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
+static EWRAM_DATA bool8 sPendingLButton = FALSE; // [Throne]
 
 COMMON_DATA u8 gSelectedObjectEvent = 0;
 
@@ -96,6 +97,7 @@ void FieldClearPlayerInput(struct FieldInput *input)
     input->tookStep = FALSE;
     input->pressedBButton = FALSE;
     input->pressedRButton = FALSE;
+    input->pressedLButton = FALSE;
     input->input_field_1_1 = FALSE;
     input->input_field_1_2 = FALSE;
     input->input_field_1_3 = FALSE;
@@ -107,6 +109,14 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
     u8 tileTransitionState = gPlayerAvatar.tileTransitionState;
     u8 runningState = gPlayerAvatar.runningState;
     bool8 forcedMove = MetatileBehavior_IsForcedMovementTile(GetPlayerCurMetatileBehavior(runningState));
+
+    // [Throne] Os botões só são lidos no centro do tile. O L apertado no meio do passo fica
+    // guardado até lá, para a troca de bike não se perder em movimento. No modo L=A ele
+    // continua sendo só A, e a troca fica desligada.
+    if (ArePlayerFieldControlsLocked() || gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A)
+        sPendingLButton = FALSE;
+    else if (newKeys & L_BUTTON)
+        sPendingLButton = TRUE;
 
     if ((tileTransitionState == T_TILE_CENTER && forcedMove == FALSE) || tileTransitionState == T_NOT_MOVING)
     {
@@ -123,6 +133,10 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
             if (newKeys & R_BUTTON)
                 input->pressedRButton = TRUE;
         }
+
+        // [Throne] Vale até na velocidade máxima da Mach Bike.
+        input->pressedLButton = sPendingLButton;
+        sPendingLButton = FALSE;
 
         if (heldKeys & (DPAD_UP | DPAD_DOWN | DPAD_LEFT | DPAD_RIGHT))
         {
@@ -239,6 +253,10 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
 
     if (input->pressedRButton && TryStartDexNavSearch())
         return TRUE;
+
+    // [Throne] A troca é na hora e não para o jogador, por isso não retorna TRUE.
+    if (input->pressedLButton)
+        TrySwitchBike();
 
     if (input->input_field_1_2 && DEBUG_OVERWORLD_MENU && !DEBUG_OVERWORLD_IN_MENU)
     {

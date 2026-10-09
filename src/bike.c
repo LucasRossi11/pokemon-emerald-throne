@@ -4,6 +4,8 @@
 #include "field_player_avatar.h"
 #include "fieldmap.h"
 #include "field_specials.h"
+#include "follower_npc.h"
+#include "item.h"
 #include "metatile_behavior.h"
 #include "oras_dowse.h"
 #include "overworld.h"
@@ -1292,6 +1294,52 @@ void GetOnOffBike(u8 transitionFlags)
         Overworld_SetSavedMusic(IS_FRLG ? MUS_RG_CYCLING : MUS_CYCLING);
         Overworld_ChangeMusicTo(IS_FRLG ? MUS_RG_CYCLING : MUS_CYCLING);
     }
+}
+
+// [Throne] Troca entre Mach Bike e Acro Bike sem descer (botão L). Precisa das duas na
+// bolsa. Não troca em terreno que depende de uma delas: trilhos, rampas de pedra, lama e
+// piso rachado.
+bool32 TrySwitchBike(void)
+{
+    s16 x, y;
+    u32 behavior;
+    u32 bikeFlags = gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BIKE;
+    enum Item otherBike;
+    u32 otherBikeFlag;
+
+    if (bikeFlags == PLAYER_AVATAR_FLAG_MACH_BIKE)
+    {
+        otherBike = ITEM_ACRO_BIKE;
+        otherBikeFlag = PLAYER_AVATAR_FLAG_ACRO_BIKE;
+    }
+    else if (bikeFlags == PLAYER_AVATAR_FLAG_ACRO_BIKE)
+    {
+        otherBike = ITEM_MACH_BIKE;
+        otherBikeFlag = PLAYER_AVATAR_FLAG_MACH_BIKE;
+    }
+    else
+    {
+        // A pé, ou na bike única do FRLG, que liga as duas flags.
+        return FALSE;
+    }
+
+    PlayerGetDestCoords(&x, &y);
+    behavior = MapGridGetMetatileBehaviorAt(x, y);
+    if (!CheckBagHasItem(otherBike, 1)
+     || gPlayerAvatar.acroBikeState != ACRO_STATE_NORMAL
+     || MetatileBehavior_IsBumpySlope(behavior)
+     || MetatileBehavior_IsMuddySlope(behavior)
+     || MetatileBehavior_IsCrackedFloor(behavior)
+     || MetatileBehavior_IsVerticalRail(behavior)
+     || MetatileBehavior_IsHorizontalRail(behavior)
+     || MetatileBehavior_IsIsolatedVerticalRail(behavior)
+     || MetatileBehavior_IsIsolatedHorizontalRail(behavior))
+        return FALSE;
+
+    PlaySE(SE_BIKE_BELL);
+    SetPlayerAvatarTransitionFlags(otherBikeFlag);
+    FollowerNPC_HandleBike();
+    return TRUE;
 }
 
 void BikeClearState(int newDirHistory, int newAbStartHistory)
