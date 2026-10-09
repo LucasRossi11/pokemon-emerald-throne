@@ -110,32 +110,34 @@ SINGLE_BATTLE_TEST("Struggle is Normal-type in Gen 1 and typeless in Gen 2+")
 
 SINGLE_BATTLE_TEST("Struggle does not receive STAB from Normal-type users")
 {
-    // Compare with Cut, which does receive normal-type STAB
+    // [Throne] O teste original comparava com o Cut como golpe Normal de poder 50, mas o Cut virou Grama/80.
+    // Agora compara o Struggle de um usuário Normal com o de um usuário não-Normal com o mesmo Ataque: o dano deve ser igual.
     ASSUME(GetSpeciesType(SPECIES_ZANGOOSE, 0) == TYPE_NORMAL);
-    ASSUME(GetMovePower(MOVE_CUT) == GetMovePower(MOVE_STRUGGLE));
-    ASSUME(GetMoveCategory(MOVE_CUT) == GetMoveCategory(MOVE_STRUGGLE));
-    ASSUME(GetMoveType(MOVE_CUT) == TYPE_NORMAL);
+    ASSUME(GetSpeciesType(SPECIES_WOBBUFFET, 0) != TYPE_NORMAL);
+    ASSUME(GetSpeciesType(SPECIES_WOBBUFFET, 1) != TYPE_NORMAL);
     if (GetConfig(B_UPDATED_MOVE_FLAGS) >= GEN_2)
         ASSUME(GetMoveType(MOVE_STRUGGLE) == TYPE_MYSTERY);
     else
         ASSUME(GetMoveType(MOVE_STRUGGLE) == TYPE_NORMAL);
 
-    s16 cutDamage;
-    s16 struggleDamage;
+    s16 normalUserDamage;
+    s16 otherUserDamage;
 
     GIVEN {
-        PLAYER(SPECIES_ZANGOOSE);
-        OPPONENT(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_ZANGOOSE) { Attack(100); }
+        PLAYER(SPECIES_WOBBUFFET) { Attack(100); }
+        OPPONENT(SPECIES_WOBBUFFET) { Ability(ABILITY_TELEPATHY); }
     } WHEN {
-        TURN { MOVE(player, MOVE_CUT); }
+        TURN { MOVE(player, MOVE_STRUGGLE); }
+        TURN { SWITCH(player, 1); }
         TURN { MOVE(player, MOVE_STRUGGLE); }
     } SCENE {
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_CUT, player);
-        HP_BAR(opponent, captureDamage: &cutDamage);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STRUGGLE, player);
-        HP_BAR(opponent, captureDamage: &struggleDamage);
+        HP_BAR(opponent, captureDamage: &normalUserDamage);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_STRUGGLE, player);
+        HP_BAR(opponent, captureDamage: &otherUserDamage);
     } THEN {
-        EXPECT_MUL_EQ(struggleDamage, Q_4_12(1.5), cutDamage);
+        EXPECT_EQ(normalUserDamage, otherUserDamage);
     }
 }
 
