@@ -2470,8 +2470,10 @@ bool32 TryFindHiddenPokemon(void)
 {
     u16 *stepPtr = GetVarPointer(DN_VAR_STEP_COUNTER);
 
+    // [Throne] Era "== NULL", o que impedia o detector de achar qualquer Pokémon: o ponteiro só
+    // é alocado mais abaixo, nesta função. O certo é não começar se já houver uma busca.
     if (DEXNAV_ENABLED == 0
-            || sDexNavSearchDataPtr == NULL
+            || sDexNavSearchDataPtr != NULL
             || !FlagGet(DN_FLAG_DETECTOR_MODE)
             || FlagGet(DN_FLAG_SEARCHING)
             || GetFlashLevel() > 0)
