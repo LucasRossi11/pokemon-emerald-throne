@@ -1,15 +1,15 @@
 #ifndef GUARD_CONFIG_DEXNAV_H
 #define GUARD_CONFIG_DEXNAV_H
 
-#define DEXNAV_ENABLED                FALSE  // Whether or not DexNav is enabled. If TRUE, flags/vars below must all be non-zero
-#define USE_DEXNAV_SEARCH_LEVELS      FALSE  /* WARNING: POSSIBLY EXCEEDS SAVEBLOCK SPACE! REQUIRES 1 BYTE PER SPECIES */
+#define DEXNAV_ENABLED                TRUE   // [Throne] Ligada. O rival entrega a DexNav no laboratório do Birch, junto com as Poké Balls. Whether or not DexNav is enabled. If TRUE, flags/vars below must all be non-zero
+#define USE_DEXNAV_SEARCH_LEVELS      TRUE   /* [Throne] Ligado. Cabe no SaveBlock3, que tem espaço próprio no fim de cada setor (até 1624 bytes). WARNING: POSSIBLY EXCEEDS SAVEBLOCK SPACE! REQUIRES 1 BYTE PER SPECIES */
 
 // Flag/var defines
-#define DN_FLAG_SEARCHING             0 // Searching for mon
-#define DN_FLAG_DEXNAV_GET            0 // DexNav shows in start menu
-#define DN_FLAG_DETECTOR_MODE         0 // Allow player to find hidden mons
-#define DN_VAR_SPECIES                0 // Registered DexNav species
-#define DN_VAR_STEP_COUNTER           0 // Steps for finding hidden Pokémon
+#define DN_FLAG_SEARCHING             FLAG_DEXNAV_SEARCHING     // [Throne] Searching for mon
+#define DN_FLAG_DEXNAV_GET            FLAG_RECEIVED_DEXNAV      // [Throne] DexNav shows in start menu
+#define DN_FLAG_DETECTOR_MODE         FLAG_DEXNAV_DETECTOR_MODE // [Throne] Allow player to find hidden mons
+#define DN_VAR_SPECIES                VAR_DEXNAV_SPECIES        // [Throne] Registered DexNav species
+#define DN_VAR_STEP_COUNTER           VAR_DEXNAV_STEP_COUNTER   // [Throne] Steps for finding hidden Pokémon
 
 // Search parameters
 #define DEXNAV_TIMEOUT                  15  // 15 seconds is the time out. Max of 1092 seconds allowed

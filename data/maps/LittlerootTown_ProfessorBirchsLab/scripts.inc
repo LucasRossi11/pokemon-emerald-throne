@@ -527,6 +527,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_MayGivePokeBalls::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_MayGotPokedexTooTakeThese, MSGBOX_DEFAULT
 	giveitem ITEM_POKE_BALL, 5
 	call_if_eq VAR_RESULT, FALSE, LittlerootTown_ProfessorBirchsLab_EventScript_MayNoRoomForPokeBalls
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_MayGiveDexNav, MSGBOX_DEFAULT
+	call LittlerootTown_ProfessorBirchsLab_EventScript_ReceiveDexNav
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_MayExplainDexNav, MSGBOX_DEFAULT
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_CatchCutePokemonWithPokeBalls, MSGBOX_DEFAULT
 	setvar VAR_RESULT, 0
 	return
@@ -535,6 +538,9 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BrendanGivePokeBalls::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_BrendanGotPokedexTooTakeThese, MSGBOX_DEFAULT
 	giveitem ITEM_POKE_BALL, 5
 	call_if_eq VAR_RESULT, FALSE, LittlerootTown_ProfessorBirchsLab_EventScript_BrendanNoRoomForPokeBalls
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_BrendanGiveDexNav, MSGBOX_DEFAULT
+	call LittlerootTown_ProfessorBirchsLab_EventScript_ReceiveDexNav
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_BrendanExplainDexNav, MSGBOX_DEFAULT
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_CatchCoolPokemonWithPokeBalls, MSGBOX_DEFAULT
 	setvar VAR_RESULT, 1
 	return
@@ -547,6 +553,16 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex::
 	special SetUnlockedPokedexFlags
 	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
 	setvar VAR_CABLE_CLUB_TUTORIAL_STATE, 1
+	return
+
+@ [Throne] O rival entrega a DexNav junto com as Poké Balls. A flag de detector já vem ligada
+@ para a DexNav achar Pokémon escondidos ao andar.
+LittlerootTown_ProfessorBirchsLab_EventScript_ReceiveDexNav::
+	playfanfare MUS_OBTAIN_ITEM
+	message LittlerootTown_ProfessorBirchsLab_Text_ReceivedDexNav
+	waitfanfare
+	setflag FLAG_RECEIVED_DEXNAV
+	setflag FLAG_DEXNAV_DETECTOR_MODE
 	return
 
 LittlerootTown_ProfessorBirchsLab_EventScript_PokemonAwait::
@@ -742,6 +758,10 @@ LittlerootTown_ProfessorBirchsLab_Text_HeardYouBeatRivalTakePokedex:
 LittlerootTown_ProfessorBirchsLab_Text_ReceivedPokedex:
 	.string "{PLAYER} received the POKéDEX!$"
 
+@ [Throne] Mensagem ao receber a DexNav.
+LittlerootTown_ProfessorBirchsLab_Text_ReceivedDexNav:
+	.string "{PLAYER} received the DEXNAV!$"
+
 LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedex:
 	.string "PROF. BIRCH: The POKéDEX is a high-tech\n"
 	.string "tool that automatically makes a record\l"
@@ -773,6 +793,23 @@ LittlerootTown_ProfessorBirchsLab_Text_CatchCutePokemonWithPokeBalls:
 	.string "If I find any cute POKéMON, I'll catch\n"
 	.string "them with POKé BALLS!$"
 
+@ [Throne] Falas da May ao entregar a DexNav.
+LittlerootTown_ProfessorBirchsLab_Text_MayGiveDexNav:
+	.string "MAY: Oh, and one more thing!\p"
+	.string "Here, I'll set you up with a DEXNAV,\n"
+	.string "just like mine!$"
+
+LittlerootTown_ProfessorBirchsLab_Text_MayExplainDexNav:
+	.string "MAY: The DEXNAV shows which POKéMON\n"
+	.string "live around where you are.\p"
+	.string "Open it from the START menu and pick\n"
+	.string "one to go looking for it.\p"
+	.string "Register a POKéMON with R, and then\n"
+	.string "you can search for it anytime by\l"
+	.string "pressing R!\p"
+	.string "It even spots hidden POKéMON while\n"
+	.string "you walk around!$"
+
 LittlerootTown_ProfessorBirchsLab_Text_OhYourBagsFull:
 	.string "Oh? Your BAG's full.$"
 
@@ -793,6 +830,23 @@ LittlerootTown_ProfessorBirchsLab_Text_CatchCoolPokemonWithPokeBalls:
 	.string "to find different POKéMON.\p"
 	.string "If I find any cool POKéMON, you bet\n"
 	.string "I'll try to get them with POKé BALLS.$"
+
+@ [Throne] Falas do Brendan ao entregar a DexNav.
+LittlerootTown_ProfessorBirchsLab_Text_BrendanGiveDexNav:
+	.string "BRENDAN: Oh, right. Take this, too.\p"
+	.string "It's a DEXNAV. I use it all the time\n"
+	.string "when I help my dad with fieldwork.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_BrendanExplainDexNav:
+	.string "BRENDAN: It shows which POKéMON live\n"
+	.string "around where you are.\p"
+	.string "Open it from the START menu and pick\n"
+	.string "one to track it down.\p"
+	.string "Register a POKéMON with R, and you\n"
+	.string "can search for it anytime by pressing\l"
+	.string "R.\p"
+	.string "It'll even spot hidden POKéMON while\n"
+	.string "you walk around.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_HeyYourBagsFull:
 	.string "Hey, your BAG's full.$"

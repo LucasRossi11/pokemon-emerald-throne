@@ -25,6 +25,8 @@ Debug_CheatStart::
 	setflag FLAG_SYS_POKEDEX_GET
 	special SetUnlockedPokedexFlags
 	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
+	setflag FLAG_RECEIVED_DEXNAV @ [Throne] DexNav vem do rival junto com a Pokédex.
+	setflag FLAG_DEXNAV_DETECTOR_MODE
 	setvar VAR_CABLE_CLUB_TUTORIAL_STATE, 2
 	setflag FLAG_SYS_NATIONAL_DEX
 	special EnableNationalPokedex

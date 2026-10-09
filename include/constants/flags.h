@@ -53,9 +53,9 @@
 
 #define FLAG_UNUSED_0x020    0x20 // Unused Flag
 #define FLAG_RECEIVED_EXP_SHARE_OLDALE    0x21 // [Throne] Recebeu o Exp. Share da moradora de Oldale (OldaleTown_House2)
-#define FLAG_UNUSED_0x022    0x22 // Unused Flag
-#define FLAG_UNUSED_0x023    0x23 // Unused Flag
-#define FLAG_UNUSED_0x024    0x24 // Unused Flag
+#define FLAG_DEXNAV_SEARCHING        0x22 // [Throne] DN_FLAG_SEARCHING: busca da DexNav em andamento
+#define FLAG_RECEIVED_DEXNAV         0x23 // [Throne] DN_FLAG_DEXNAV_GET: recebeu a DexNav do rival (LittlerootTown_ProfessorBirchsLab)
+#define FLAG_DEXNAV_DETECTOR_MODE    0x24 // [Throne] DN_FLAG_DETECTOR_MODE: a DexNav acha Pokémon escondidos ao andar
 #define FLAG_UNUSED_0x025    0x25 // Unused Flag
 #define FLAG_UNUSED_0x026    0x26 // Unused Flag
 #define FLAG_UNUSED_0x027    0x27 // Unused Flag
